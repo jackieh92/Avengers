@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Marvels, register Your Phone Number To Save The World.</h1>
+
+<!-- Signup Form which comes from Flask Route-->
+<form action="" method="post">
+    {{ phone_number.hidden_tag() }}
+    <div class = "form-group">
+        <fieldset>
+            {{ phone_number.first_name.label }}
+            {{ phone_number.first_name(class = "form-control", placeholder = "First Name") }}
+        </fieldset>
+        <fieldset>
+            {{ phone_number.last_name.label }}
+            {{ phone_number.last_name(class="form-control", placeholder="Last Name") }}
+        </fieldset>
+        <fieldset>
+            {{ phone_number.area_code.label }}
+            {{ phone_number.area_code(class = "form-control", placeholder = "Area Code") }}
+        </fieldset>
+        <fieldset>
+            {{ phone_number.number.label }}
+            {{ phone_number.number(class="form-control", placeholder="Phone Number") }}
+        </fieldset>
+        {{ phone_number.submit(class="btn btn-success") }}
+    </div>
+    
+</form>
+
+
+
+{% endblock content %}
