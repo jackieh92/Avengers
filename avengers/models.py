@@ -40,12 +40,12 @@ class Phone(db.Model):
     last_name = db.Column(db.String(300))
     area_code = db.Column(db.Integer)
     number = db.Column(db.String(300))
-    date_create = db.Column(db.DateTime, nullable = False, default = datetime.utctimetuple )
+    date_create = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
 
     def __init__(self,first_name, last_name, area_code, number, user_id):
         self.first_name = first_name
-        self.last_name - last_name
+        self.last_name = last_name
         self.area_code = area_code
         self.number = number
         self.user_id = user_id

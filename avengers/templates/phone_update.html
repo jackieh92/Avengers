@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Phone Number Update</h2>
+    <form action="" method="post">
+        {{ update_phone.hidden_tag() }}
+        <div class="form-group">
+            <fieldset>
+                {{ update_phone.first_name.label }}
+                {{ update_phone.first_name(class = "form-control", placeholder = "Update Blog Post Title") }}
+            </fieldset>
+            <fieldset>
+                {{ update_phone.last_name.label }}
+                {{ update_phone.last_name(class = "form-control", placeholder = " Update Blog Post Content") }}
+            </fieldset>
+            <fieldset>
+                {{ update_phone.area_code.label }}
+                {{ update_phone.area_code(class = "form-control", placeholder = "Update Blog Post Title") }}
+            </fieldset>
+            <fieldset>
+                {{ update_phone.number.label }}
+                {{ update_phone.number(class = "form-control", placeholder = " Update Blog Post Content") }}
+            </fieldset>
+            {{ update_phone.submit(class = "btn btn-primary") }}
+        </div>
+    </form>
+</div>
+
+
+
+
+{% endblock content %}

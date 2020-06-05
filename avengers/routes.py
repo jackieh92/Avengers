@@ -6,7 +6,7 @@ from avengers.forms import UserInfoForm, PhoneNumber, LoginForm
 
 
 # Import for Models
-from avengers.models import User, check_password_hash
+from avengers.models import User, check_password_hash, Phone
 
 # Import for Flask Login - Login Required, login_user, current_user, logout_user
 from flask_login import login_required, login_user, current_user,logout_user
@@ -18,6 +18,8 @@ from flask_login import login_required, login_user, current_user,logout_user
 def home():
     customer_name = "Jackie"
     return render_template("home.html", customer_name = customer_name)
+
+
 
 
 # Register Route
@@ -44,9 +46,11 @@ def register():
         
         mail.send(msg)
 
-
-        
     return render_template('register.html', form = form)
+
+
+
+
 
 # Register Phone Number Route
 @app.route('/phone', methods = ["GET", "POST"])
@@ -57,8 +61,66 @@ def phone():
         last_name = phone_number.last_name.data
         area_code = phone_number.area_code.data
         number = phone_number.number.data
+        user_id = current_user.id
         print("\n", first_name, last_name, number)
+
+        phone = Phone(first_name, last_name, area_code, number, user_id)
+        db.session.add(phone)
+        db.session.commit()
+        return redirect(url_for('phone_display', phone_id = phone.id))
     return render_template('/phone.html', phone_number = phone_number)
+
+
+
+
+# To see phone number displayed in ONE place
+@app.route('/phone_display')
+def phone_display():
+    user = current_user
+    form = Phone.query.filter_by(user_id=current_user.id).first()
+    #form = Phone.query.get_or_404(phone_id)
+
+    return render_template('phone_display.html', form = form)
+
+
+
+
+@app.route('/phone/update/<int:phone_id>', methods = ['GET', 'POST'])
+@login_required
+def phone_update(phone_id):
+    form = Phone.query.get_or_404(phone_id)
+    update_phone = PhoneNumber()
+    
+    if request.method == 'POST' and update_phone.validate():
+        first_name = update_phone.first_name.data
+        last_name = update_phone.last_name.data
+        area_code = update_phone.area_code.data
+        number = update_phone.number.data
+        print(first_name, last_name, area_code, number)
+
+        # Update will be added to database here
+        form.first_name = first_name
+        form.last_name = last_name
+        form.area_code = area_code
+        form.number = number
+
+        db.session.commit()
+        return redirect(url_for('phone_update', phone_id = form.id))
+    return render_template('phone_update.html', update_phone = update_phone)
+
+
+
+
+@app.route('/phone/delete/<int:phone_id>', methods = ['POST'])
+@login_required
+def phone_delete(phone_id):
+    post = Phone.query.get_or_404(phone_id)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(url_for('home'))
+
+
+
 
 # Login Form Route
 @app.route('/login', methods = ['GET', 'POST'])
